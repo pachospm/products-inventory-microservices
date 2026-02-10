@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  products-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: products_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - products-data:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  inventory-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: inventory_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - inventory-data:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  products-service:
+    build: ./products-service
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://postgres:postgres@products-db:5432/products_db
+      API_KEY: ${API_KEY:-my-secret-api-key}
+    depends_on:
+      products-db:
+        condition: service_healthy
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  inventory-service:
+    build: ./inventory-service
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      DATABASE_URL: postgresql://postgres:postgres@inventory-db:5432/inventory_db
+      API_KEY: ${API_KEY:-my-secret-api-key}
+      PRODUCTS_SERVICE_URL: http://products-service:3001
+    depends_on:
+      inventory-db:
+        condition: service_healthy
+      products-service:
+        condition: service_started
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+volumes:
+  products-data:
+  inventory-data:
+
+networks:
+  microservices-net:
+    driver: bridge
