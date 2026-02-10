@@ -21,7 +21,7 @@ export class ProductClientService {
         if (err.response?.status === 404) {
           throw new NotFoundError('Product', productId);
         }
-        if (err.code === 'ECONNABORTED' || err.code === 'ETIMEDOUT') {
+        if (err.response?.status === 504 || err.code === 'ECONNABORTED' || err.code === 'ETIMEDOUT') {
           throw new GatewayTimeoutError('Products service');
         }
         if (err.code === 'ECONNREFUSED' || !err.response) {
