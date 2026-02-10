@@ -17,7 +17,8 @@ export function createHttpClient(baseURL: string, apiKey: string) {
     retryCondition: (error) => {
       return (
         axiosRetry.isNetworkOrIdempotentRequestError(error) ||
-        error.response?.status === 503
+        error.response?.status === 503 ||
+        error.response?.status === 504
       );
     },
   });

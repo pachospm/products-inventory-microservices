@@ -64,7 +64,7 @@ export class ProductService {
       return await this.repository.update(id, data);
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
-        throw new ConflictError(`Product with SKU '${input.sku}' already exists`);
+        throw new ConflictError(`Product with SKU '${input.sku ?? 'unknown'}' already exists`);
       }
       throw err;
     }
