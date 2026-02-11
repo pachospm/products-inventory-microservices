@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { createApp } from '../../src/app';
 
 // Set env vars before importing anything that uses them
-process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/products_test';
+process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/products_db';
 process.env.API_KEY = 'test-api-key';
 process.env.NODE_ENV = 'test';
 
