@@ -2,6 +2,7 @@ import { Serializer } from 'jsonapi-serializer';
 import { Inventory } from '@prisma/client';
 
 const inventorySerializer = new Serializer('inventory', {
+  pluralizeType: false,
   attributes: ['productId', 'quantity', 'createdAt', 'updatedAt'],
   keyForAttribute: 'camelCase',
   dataLinks: {

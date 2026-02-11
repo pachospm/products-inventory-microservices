@@ -6,4 +6,5 @@ module.exports = {
   testMatch: ['**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js', 'json'],
   collectCoverageFrom: ['src/**/*.ts', '!src/server.ts'],
+  setupFiles: ['<rootDir>/tests/setup.ts'],
 };
