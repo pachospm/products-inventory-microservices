@@ -4,7 +4,7 @@ import axios from 'axios';
 import { createApp } from '../../src/app';
 
 // Set env vars before importing
-process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5433/inventory_test';
+process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5433/inventory_db';
 process.env.API_KEY = 'test-api-key';
 process.env.PRODUCTS_SERVICE_URL = 'http://localhost:3001';
 process.env.NODE_ENV = 'test';
@@ -63,7 +63,7 @@ describe('Inventory Routes (Integration)', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.data.type).toBe('inventory');
-      expect(res.body.data.attributes['product-id']).toBe(productId);
+      expect(res.body.data.attributes.productId).toBe(productId);
       expect(res.body.data.attributes.quantity).toBe(50);
     });
 
