@@ -87,7 +87,7 @@ Dos microservicios independientes (Productos e Inventario) que se comunican via 
 
 ```bash
 # Clonar el repositorio
-git clone <repo-url>
+git clone <https://github.com/pachospm/products-inventory-microservices.git>
 cd prueba-tecnica-backend
 
 # Levantar todo el stack
